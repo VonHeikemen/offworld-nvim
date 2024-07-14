@@ -34,7 +34,7 @@ local function cmd(input)
     parse_opts(pkg, args[i])
   end
 
-  require('user.git-plugin')[fn](pkg)
+  require('offworld.git-plugin')[fn](pkg)
 end
 
 vim.api.nvim_create_user_command('GitPlugin', cmd, {nargs = '+', bang = true})
