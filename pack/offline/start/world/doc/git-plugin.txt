@@ -1,0 +1,168 @@
+==============================================================================
+                                        *git-plugin.txt* *offworld.git-plugin*
+
+Contains a collection of functions that help you download plugins from github.
+
+This isn't meant to be a full-featured plugin manager.
+
+==============================================================================
+Commands                                        *offworld.git-plugin-commands*
+
+GitPlugin {command} {plugin} [{opts}={value}]: ~
+    Executes {command} for {plugin}.
+
+    These are the available commands:
+
+        * install: Download a plugin using `git clone`.
+
+        * update: Update a plugin using `git pull`.
+
+        * remove: Delete a plugin directory.
+
+        * open_dir: Open a terminal buffer in the directory of {plugin}.
+
+    For the `install` and `update` commands, {plugin} must be the last
+    component of a github URL, that is author/repository. For example:
+    `tpope/vim-repeat`.
+
+    For the `remove` and `open_dir` commands, {plugin} must be the name of the
+    directory where the plugin was installed.
+
+    The following options are available in {opts}
+
+        * branch: git branch used for the `git clone` command.
+
+        * package: Name of the root "package" where the plugin is going to be
+          installed.
+
+        * opt: Whether this plugin should be an "optional plugin". It can be
+          `true` or `false`.
+
+==============================================================================
+Lua API                                              *offworld.git-plugin-api*
+
+                                              *offworld.git-plugin.settings()*
+.settings({opts}): ~
+    Modify the current settings.
+
+    {opts} supports the following properties: ~
+
+        * root_dir: Path where the "root package" will be.
+
+        * package: Name of the "root package" where the plugins will be
+          installed.
+
+        * log: Path to the log file.
+
+        * url_pattern: Format of the url where plugins will be downloaded.
+
+        * events.install_done: Name of the "custom event" that will be
+          triggered after a plugin is installed. Default value is
+          "PluginInstallDone"
+
+        * events.update_done: Name of the "custom event" that will be
+          triggered after a plugin is updated. Default value is
+          "PluginUpdateDone"
+
+    Here is an example that shows the default values.
+>lua
+    local uv = vim.uv or vim.loop
+    local sep = uv.os_uname().version:match('Windows') and '\\' or '/'
+
+    require('offworld.git-plugin').settings({
+      root_dir = table.concat({vim.fn.stdpath('data'), 'site', 'pack'}, sep),
+      log = table.concat({vim.fn.stdpath('data'), 'git-plugin.log'}, sep),
+      package = 'gitplugins',
+      url_pattern = 'https://github.com/%s.git',
+      events = {
+        install_done = 'PluginInstallDone',
+        update_done = 'PluginUpdateDone',
+      },
+    })
+<
+                                               *offworld.git-plugin.install()*
+.install({opts}): ~
+    Download a plugin using the `git clone` command.
+
+    The first element of {opts} should be the last component of a github URL,
+    that is author/repository. For example: `tpope/vim-repeat`.
+
+    {opts} supports the following properties: ~
+
+        * opt: Whether this plugin should be an "optional plugin". It can be
+        `true` or `false`.
+
+        * branch: Name of the branch to clone.
+
+        * dirname: Name of the directory where the plugins will be installed.
+
+        * package: Name of the "root package" where the plugin will be
+          installed.
+
+        * build: A lua function that is going to be executed after plugin is
+          installed.
+
+    Here is an example showing how to download the plugin `mini.comment`.
+>lua
+    require('offworld.git-plugin').install({
+      'echasnovski/mini.comment',
+      branch = 'stable',
+      opt = false,
+    })
+<
+    If you wanted to you could download another plugin manager like `paq.nvim`.
+>lua
+    require('offworld.git-plugin').install({
+      'savq/paq-nvim',
+      package = 'paqs',
+      opt = false,
+    })
+<
+                                                *offworld.git-plugin.update()*
+.update({opts}): ~
+    Update a plugin using the `git pull` command.
+
+    The first element of {opts} should be the last component of a github URL,
+    that is author/repository. For example: `tpope/vim-repeat`.
+
+    {opts} supports the following properties: ~
+
+        * dirname: Name of the directory where the plugins will be installed.
+
+        * package: Name of the "root package" where the plugin will be
+          installed.
+
+        * build: A lua function that is going to be executed after plugin is
+          updated.
+
+    Here is an example showing how to update the plugin `mini.comment`.
+>lua
+    require('offworld.git-plugin').update({'echasnovski/mini.comment'})
+<
+                                                *offworld.git-plugin.remove()*
+.remove({opts}): ~
+    Deletes the directory of a plugin.
+
+    The first element of {opts} should be the name of the directory where the
+    plugin is installed.
+
+    Here is an example showing how to delete the plugin `mini.comment`.
+>lua
+    require('offworld.git-plugin').remove({'mini.comment'})
+<
+                                              *offworld.git-plugin.open_dir()*
+.open_dir({opts}): ~
+    Opens a terminal window with the directory of the plugin as current
+    working directory.
+
+    The first element of {opts} should be the name of the directory where the
+    plugin is installed.
+
+    Here is an example showing how to delete the plugin `mini.comment`.
+>lua
+    require('offworld.git-plugin').open_dir({'mini.comment'})
+<
+==============================================================================
+
+vim:tw=78:ft=help:norl
+

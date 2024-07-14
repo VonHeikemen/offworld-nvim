@@ -1,0 +1,83 @@
+==============================================================================
+                                        *buffer-nav.txt* *offworld.buffer-nav*
+
+Navigate between the buffer you consider important and navigate to them
+quickly.
+
+==============================================================================
+Usage                                              *offworld.buffer-nav-usage*
+
+Mark a buffer using the command `BufferNavMark`, see the current list of
+buffers using the command `BufferNavMenu`, and navigate to a buffer pressing
+<Enter> or using the command `BufferNav`.
+
+To create these command you need to call the .setup() function.
+>lua
+  require('offworld.buffer-nav').setup()
+<
+Note: This doesn't replace the built-in command |:buffers|. Use the command
+:buffers to see the list of open files, and BufferNav to navigate between the
+most frecuently used files.
+
+                                        *offworld.buffer-nav-suggested-config*
+>lua
+  -- Open buffer menu
+  vim.keymap.set('n', 'M', '<cmd>BufferNavMenu<cr>')
+  
+  -- Mark a buffer
+  vim.keymap.set('n', '<leader>m', '<cmd>BufferNavMark<cr>')
+
+  -- Mark a buffer and open menu
+  vim.keymap.set('n', '<leader>M', '<cmd>BufferNavMark!<cr>')
+
+  -- Navigate to a buffer
+  vim.keymap.set('n', '<M-1>', '<cmd>BufferNav 1<cr>')
+  vim.keymap.set('n', '<M-2>', '<cmd>BufferNav 2<cr>')
+  vim.keymap.set('n', '<M-3>', '<cmd>BufferNav 3<cr>')
+  vim.keymap.set('n', '<M-4>', '<cmd>BufferNav 4<cr>')
+<
+
+With this keybindings you'll be able mark a buffer using <leader>m. And you
+can move quickly between the first 4 buffers on the buffer menu with `Alt` + a
+number.
+
+Use M to open the buffer menu. With it can change the order of the buffer
+list. You can also change and delete any buffer from the list using normal vim
+motions/commands.
+
+==============================================================================
+Commands                                        *offworld.buffer-nav-commands*
+
+                                                                  *:BufferNav*
+BufferNav {number}: ~
+    Navigate to a buffer in the buffer list. The argument {number} indicates
+    which buffer you want to edit.
+
+    For example `:BufferNav 1` will navigate to the first buffer in the list,
+    `:BufferNav 2` will navigate to the second buffer in the list...
+
+                                                              *:BufferNavMark*
+BufferNavMark[!]: ~
+    Append the current buffer to the list.
+
+    If you use the `!` the buffer menu will open after modifying the buffer
+    list.
+
+                                                              *:BufferNavMenu*
+BufferNavMenu: ~
+    Open the floating window with the buffer list.
+
+                                                             *:BufferNavClose*
+BufferNavClose: ~
+    Close the floating window with the buffer list.
+
+                                                              *:BufferNavRead*
+BufferNavRead {path}: ~
+    Load the content of a file into the buffer menu.
+
+    This will replace the previous content of the floating menu.
+    
+==============================================================================
+
+vim:tw=78:ft=help:norl
+

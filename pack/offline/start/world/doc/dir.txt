@@ -1,0 +1,43 @@
+==============================================================================
+                                                      *dir.txt* *offworld.dir*
+
+Utility function that solves common problems related to directory paths.
+
+==============================================================================
+Lua API                                                     *offworld.dir.api*
+
+                                                   *offworld.dir.find_first()*
+.find_first({list}): ~
+    Checks the parent directories and returns the path to the first folder
+    that has a file in {list}. Useful to detect the root directory.
+
+    {list} supports the following properties:
+
+        - path: ~
+          (String, Optional) The path from where it should start looking for
+          the files in {list}.
+
+        - buffer: ~
+          (Boolean, Optional) When enabled it will use the path of the current
+          buffer.
+
+    Note: search will stop once it gets to your "HOME" folder.
+>lua
+    local lsp = require('offworld.lsp-client')
+    local dir = require('offworld.dir')
+
+    lsp.new_client({
+      name = 'lua_ls',
+      cmd = {'lua-language-server'},
+      filetypes = {'lua'},
+      root_dir = function(bufnr)
+        --- project root will be the first directory that has
+        --- either .luarc.json or .stylua.toml
+        return dir.find_first(bufnr, {'.luarc.json', '.stylua.toml'})
+      end
+    })
+<
+==============================================================================
+
+vim:tw=78:ft=help:norl
+

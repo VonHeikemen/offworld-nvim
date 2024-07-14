@@ -1,0 +1,28 @@
+==============================================================================
+                                            *terminal.txt* *offworld.terminal*
+
+Show and hide a terminal window easily.
+
+==============================================================================
+Lua API                                                *offworld.terminal-api*
+
+                                           *offworld.terminal.show_terminal()*
+.show_terminal({opts}): ~
+    Show the current terminal window, or creates one if needed.
+
+    The argument {opts} supports the same properties as .settings().
+
+                                           *offworld.terminal.hide_terminal()*
+.hide_terminal(): ~
+    Hide the current terminal window.
+
+                                                  *offworld.terminal.toggle()*
+.toggle({opts}): ~
+    Show or hide the current terminal. Or creates one if needed.
+
+    The argument {opts} supports the same properties as .settings().
+
+==============================================================================
+
+vim:tw=78:ft=help:norl
+

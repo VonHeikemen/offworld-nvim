@@ -12,8 +12,16 @@ What's included here? Custom colorschemes, statusline, tabline, lsp client confi
 
 ## Installation
 
+* Download the code into Neovim's configuration folder
+
 ```sh
 git clone https://github.com/VonHeikemen/offworld-nvim ~/.config/nvim
+```
+
+* Generate the help tags
+
+```vim
+:helptags ALL
 ```
 
 ## Custom keybindings

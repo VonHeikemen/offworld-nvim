@@ -1,0 +1,41 @@
+==============================================================================
+                                        *completion.txt* *offworld.completion*
+
+Provides a simple completion setup where you can use tab or a any other key to
+toggle Neovim's completion menu.
+
+==============================================================================
+Quick Start                                   *offworld.completion-quickstart*
+
+You'll need to use the module called `offworld.completion`.
+
+Here is quick configuration example.
+>lua
+  require('offworld.completion').tabcomplete()
+  require('offworld.completion').set_trigger('<C-e>')
+<
+==============================================================================
+Lua API                                              *offworld.completion-api*
+
+                                          *offworld.completion.tab_complete()*
+.tab_complete(): ~
+    Creates the keymaps to use tab and shift+tab to trigger the completion
+    menu. By default it will only try to complete using words in the current
+    buffer. Use the function |offworld.completion.set_omnifunc()| in a buffer
+    to switch the "source" of completion to the omnifunc.
+
+                                          *offworld.completion.set_trigger()*
+.set_trigger({key}): ~
+    Creates the keymaps that will make `{key}` toggle the completion menu. By
+    default it will only try to complete using words in the current buffer.
+    Use the function |offworld.completion.set_omnifunc()| in a buffer to
+    switch the "source" of completion to the omnifunc.
+
+                                         *offworld.completion.set_omnifunc()*
+.set_trigger({bufnr}): ~
+    Overrides the keymaps in the current buffer to make them use the omnifunc
+    as a source of completions.
+
+==============================================================================
+
+vim:tw=78:ft=help:norl

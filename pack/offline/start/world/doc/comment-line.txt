@@ -1,0 +1,31 @@
+==============================================================================
+                                    *comment-line.txt* *offworld.comment-line*
+
+Toggle comment in the current line or selection.
+
+It buffer local option |'commentstring'| to determine how to
+comment the code.
+
+Is worth mention this is a "polyfill" for the toggle comment feature that was
+added in Neovim v0.10. It only creates the keybindings if the version is below
+v0.10.0.
+
+==============================================================================
+Lua API                                            *offworld.comment-line-api*
+
+                                              *offworld.comment-line.toggle()*
+.toggle(): ~
+    Toggle comment in the current line or selection. Uses the
+    |'commentstring'| option to comment the current line if needed.
+
+                                           *offworld.comment-line.toggle_op()*
+.toggle_op(): ~
+    Same as `.toggle()` but returns expression that makes the operation
+    dot-repeatable.
+
+    It only supports dot-repeat in normal mode.
+
+==============================================================================
+
+vim:tw=78:ft=help:norl
+
