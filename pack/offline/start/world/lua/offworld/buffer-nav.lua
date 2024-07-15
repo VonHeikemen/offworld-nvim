@@ -49,9 +49,7 @@ function M.add_file(opts)
     return
   end
 
-  if should_mount then
-    M.window.mount()
-  end
+  M.window.mount()
 end
 
 function M.go_to_file(index)
@@ -112,7 +110,7 @@ function s.create_window()
   vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, {''})
   vim.api.nvim_buf_set_option(buf_id, 'modified', false)
 
-  local close = s.close_window
+  local close = M.close_window
   local opts = {noremap = true, buffer = buf_id}
 
   vim.keymap.set('n', '<esc>', close, opts)
@@ -122,7 +120,7 @@ function s.create_window()
   vim.keymap.set('n', '<cr>', function()
     local index = vim.fn.line('.')
     close()
-    s.go_to_file(index)
+    M.go_to_file(index)
   end, opts)
 
   local autocmd = vim.api.nvim_create_autocmd
