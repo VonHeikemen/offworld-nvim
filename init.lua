@@ -3,6 +3,6 @@ require('user.commands')
 require('user.keymaps')
 
 -- Theming
-pcall(vim.cmd, 'colorscheme sigil')
+vim.cmd('colorscheme wave')
 require('user.statusline')
 require('user.tabline')
