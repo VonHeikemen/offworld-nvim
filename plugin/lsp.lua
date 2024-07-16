@@ -13,7 +13,6 @@ end
 local lspconfig = {}
 
 lspconfig.lua_ls = {
-  name = 'lua_ls',
   cmd = {'lua-language-server'},
   filetypes = {'lua'}
 }
@@ -29,6 +28,7 @@ local function lsp_start(input)
     return
   end
 
+  config.name = name
   config.root_dir = function()
     return vim.fn.getcwd()
   end
