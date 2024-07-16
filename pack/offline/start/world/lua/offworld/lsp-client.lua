@@ -2,14 +2,15 @@ local M = {}
 local s = {}
 
 local augroup = vim.api.nvim_create_augroup('offworld_lsp', {clear = true})
-local user_attach = false
+local extra_setup = vim.api.nvim_parse_cmd == nil
 local all_clients = {}
 
 local function lsp_format(input)
-	require('offworld.lsp-format').format_command(input)
+  require('offworld.lsp-format').format_command(input)
 end
 
-function M.attached(client, bufnr)
+local function compat_setup(settings, client, bufnr)
+  local lsp_omnifunc = vim.tbl_get(settings, 'completion', 'lsp_omnifunc')
   local capabilities = client.server_capabilities
 
   if capabilities.completionProvider then
@@ -20,22 +21,28 @@ function M.attached(client, bufnr)
     vim.bo[bufnr].tagfunc = 'v:lua.vim.lsp.tagfunc'
   end
 
-	vim.api.nvim_buf_create_user_command(
-		bufnr,
-		'LspFormat',
-		lsp_format,
-		{nargs = '?', bang = true, range = true}
-	)
-
-  if user_attach then
-    user_attach(client, bufnr)
+  if lsp_omnifunc then
+    require('offworld.completion').set_omnifunc(bufnr)
   end
 end
 
-function M.on_attach(fn)
-  if type(fn) == 'function' then
-    user_attach = fn
+function M.attached(client, bufnr)
+  local settings = require('offworld.settings')
+
+  if extra_setup then
+    compat_setup(settings, client, bufnr)
   end
+
+  if settings.lsp_attach then
+    settings.lsp_attach(client, bufnr)
+  end
+
+  vim.api.nvim_buf_create_user_command(
+    bufnr,
+    'LspFormat',
+    lsp_format,
+    {nargs = '?', bang = true, range = true}
+  )
 end
 
 function M.new_client(opts)
@@ -59,9 +66,6 @@ function M.new_client(opts)
         pcall(vim.api.nvim_del_autocmd, setup_id)
       end
     end),
-    on_attach = function(client, bufnr)
-      M.attached(client, bufnr)
-    end,
   }
 
   local config = vim.tbl_deep_extend('force', defaults, opts)
@@ -81,11 +85,16 @@ function M.new_client(opts)
     end
   end
 
-  if opts.on_attach then
-    local cb = opts.on_attach
-    config.on_attach = function(...)
-      M.attached(...)
-      cb(...)
+  if extra_setup then
+    if opts.on_attach == nil then
+      config.on_attach = M.attached
+    else
+      local attached = M.attached
+      local on_attach = opts.on_attach
+      config.on_attach = function(...)
+        attached(...)
+        on_attach(...)
+      end
     end
   end
 

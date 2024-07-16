@@ -21,7 +21,6 @@ local function has_words_before()
 end
 
 function M.tab_complete()
-  s.settings()
   s.tab_complete = true
 
   vim.keymap.set('i', '<Tab>', s.tab_expr, {expr = true})
@@ -29,7 +28,6 @@ function M.tab_complete()
 end
 
 function M.set_trigger(key)
-  s.settings()
   s.trigger = key
 
   vim.keymap.set('i', key, s.toggle_expr, {expr = true})
@@ -108,17 +106,6 @@ function s.backspace(buffer)
 
   vim.keymap.set('i', '<bs>', rhs, {expr = true, buffer = buffer})
 end
-
-function s.settings()
-  if s.done then
-    return
-  end
-
-  s.done = true
-  vim.opt.completeopt = {'menu', 'menuone', 'noselect', 'noinsert'}
-  vim.opt.shortmess:append('c')
-end
-
 
 return M
 

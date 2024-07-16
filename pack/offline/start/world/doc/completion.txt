@@ -7,15 +7,36 @@ toggle Neovim's completion menu.
 ==============================================================================
 Quick Start                                   *offworld.completion-quickstart*
 
-You'll need to use the module called `offworld.completion`.
-
-Here is quick configuration example.
+Here is a quick configuration example using `offworld.settings` module.
 >lua
-  require('offworld.completion').tabcomplete()
-  require('offworld.completion').set_trigger('<C-e>')
+  local offworld = require('offworld.settings')
+
+  offworld.completion = {
+    lsp_omnifunc = true,
+    tab_complete = true,
+    toggle_menu = '<C-e>',
+  }
 <
 ==============================================================================
+Settings                                        *offworld.completion-settings*
+
+                                   *offworld.settings.completion.tab_complete*
+tab_complete: ~
+    (Boolean, Optional) Enable keymaps for tab complete.
+
+                                    *offworld.settings.completion.toggle_menu*
+toggle_menu: ~
+    (String, Optional) Set keymap to toggle completion menu.
+
+                                   *offworld.settings.completion.lsp_omnifunc*
+lsp_omnifunc: ~
+    (Boolean, Optional) Enable omnifunc keymaps when a language server is
+    active in the current buffer.
+
+==============================================================================
 Lua API                                              *offworld.completion-api*
+
+Note: prefer using `offworld.settings` over of calling lua functions directly.
 
                                           *offworld.completion.tab_complete()*
 .tab_complete(): ~
@@ -32,7 +53,7 @@ Lua API                                              *offworld.completion-api*
     switch the "source" of completion to the omnifunc.
 
                                          *offworld.completion.set_omnifunc()*
-.set_trigger({bufnr}): ~
+.set_omnifunc({bufnr}): ~
     Overrides the keymaps in the current buffer to make them use the omnifunc
     as a source of completions.
 

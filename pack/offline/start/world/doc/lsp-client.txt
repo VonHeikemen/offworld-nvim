@@ -51,12 +51,12 @@ Once you have a language server configured and ready to go you can start
 creating the keymaps.
 
 A common convention here is to create the keymaps only when the language
-server is active in the current. To make this easier you can use the function
-.on_attach(), like this
+server is active in the current. To make this easier you can set the option
+`lsp_attach` of the module `offworld.settings`
 >lua
-  local lsp = require('offworld.lsp-client')
+  local offworld = require('offworld.settings')
 
-  lsp.on_attach(function(client, bufnr)
+  offworld.lsp_attach = function(client, bufnr)
     local bufmap = function(mode, lhs, rhs)
       vim.keymap.set(mode, lhs, rhs, {buffer = bufnr})
     end
@@ -72,7 +72,7 @@ server is active in the current. To make this easier you can use the function
     bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
     bufmap({'n', 'x'}, '<F3>', '<cmd>LspFormat!<cr>')
     bufmap('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>')
-  end)
+  end
 <
 If you want details about what each function can do, read their
 documentation in the help page. For example, `:help vim.lsp.buf.hover()`.
@@ -124,6 +124,20 @@ function and return a string with a path.
   })
 <
 ==============================================================================
+Settings                                               *offworld.lsp-settings*
+
+                                              *offworld.settings.lsp_attach()*
+.lsp_attach({client}, {bufnr}): ~
+    Callback function that will be invoked when a language server is attached
+    to a buffer.
+>lua
+    local offworld = require('offworld.settings')
+
+    offworld.lsp_attach = function(client, bufnr)
+      print('hello world')
+    end
+<
+==============================================================================
 Lua API                                                     *offworld.lsp-api*
 
                                                    *offworld.lsp.new_client()*
@@ -156,11 +170,6 @@ Lua API                                                     *offworld.lsp-api*
         - on_attach: ~
           (Function) A function that will be executed after the language
           server gets attached to a buffer.
-
-                                                    *offworld.lsp.on_attach()*
-.on_attach({callback}): ~
-    Executes the {callback} function every time a language server is attached
-    to a buffer.
 
 ==============================================================================
 
