@@ -24,7 +24,7 @@ local function lsp_start(input)
   local name = input.args
 
   local config = lspconfig[name]
-  if config == nil or config.root_dir then
+  if config == nil or config.name then
     return
   end
 
