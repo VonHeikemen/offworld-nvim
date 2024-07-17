@@ -34,6 +34,7 @@ Leader key: `Space`.
 | Normal | `gp` | Paste text from clipboard. |
 | Normal | `x` | Delete one character without modifying internal registers. |
 | Normal | `X` | Delete text without modifying internal registers. |
+| Normal | `U` | Redo changes which were undone. |
 | Normal | `K` | Displays hover information about the symbol under the cursor. |
 | Normal | `gd` | Jump to the definition. |
 | Normal | `gD` | Jump to declaration. |
@@ -51,9 +52,19 @@ Leader key: `Space`.
 | Normal | `<leader>l` | Go to last non empty character in line. |
 | Normal | `<leader>a` | Select all text. |
 | Normal | `<leader>w` | Save file. |
-| Normal | `<leader>bq` | Close current buffer. |
+| Normal | `<leader>qq` | Quit Neovim safely. |
+| Normal | `<leader>Q` | Quit Neovim (discard unsaved changes). |
+| Normal | `<leader>bc` | Close current buffer. |
+| Normal | `<leader>bq` | Close current buffer and quit if it's the last. |
 | Normal | `<leader>bl` | Go to last active buffer. |
 | Normal | `<leader><space>` | Search open buffers. |
+| Normal | `<Ctrl-k>` | Move current line up. |
+| Normal | `<Ctrl-j>` | Move current line down. |
+| Normal | `<leader>sj` | Begin word search and replace. |
+| Normal | `<leader>sq` | Word search and replace but using a macro. |
+| Normal | `<leader>sQ` | Apply macro in register `i`. |
+| Normal | `<F8>` | Apply macro in the next match of the current search. |
+| Normal | `Q` | Repeat recently used macro. |
 | Normal | `<leader>e` | Toggle file explorer. |
 | Normal | `<leader>E` | Open file explorer in current folder. |
 | Normal | `<F5>` | Toggle embedded terminal. |
