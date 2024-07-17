@@ -20,6 +20,12 @@ vim.keymap.set({'n', 'x'}, 'c', '"_c')
 vim.keymap.set({'n', 'x'}, 'x', '"_x')
 vim.keymap.set({'n', 'x'}, 'X', '"_d')
 
+-- Moving lines and preserving indentation
+vim.keymap.set('n', '<C-j>', "<cmd>move .+1<cr>==")
+vim.keymap.set('n', '<C-k>', "<cmd>move .-2<cr>==")
+vim.keymap.set('x', '<C-j>', "<esc><cmd>'<,'>move '>+1<cr>gv=gv")
+vim.keymap.set('x', '<C-k>', "<esc><cmd>'<,'>move '<-2<cr>gv=gv")
+
 -- Select all text
 vim.keymap.set('n', '<leader>a', '<cmd>keepjumps normal! ggVG<cr>')
 
@@ -59,6 +65,33 @@ vim.keymap.set('n', '<leader>E', '<cmd>Lexplore %:p:h<CR>')
 
 -- Switch to the directory of the open buffer
 vim.keymap.set('n', '<leader>cd', '<cmd>lcd %:p:h<cr>:pwd<cr>')
+
+-- Add word to search then replace
+vim.keymap.set('n', '<leader>sj', [[<cmd>let @/='\<'.expand('<cword>').'\>'<cr>"_ciw]])
+
+-- Add selection to search then replace
+vim.keymap.set('x', '<leader>sj', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>"_cgn]])
+
+-- Add selection to search then record macro
+vim.keymap.set('x', '<leader>sq', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>gvqi]])
+
+-- Record macro on word
+vim.keymap.set('n', '<leader>sq', [[<cmd>let @/=expand('<cword>')<cr>viwo<Esc>qi]])
+
+-- Apply macro in the next instance of the search
+vim.keymap.set('n', '<F8>', 'gn@i')
+
+-- Apply @i macro
+vim.keymap.set('n', '<leader>sQ', '@i')
+
+-- Repeat recently used macro
+vim.keymap.set('n', 'Q', '@@')
+
+-- Undo break points
+local break_points = {'<space>', '-', '_', ':', '.', '/'}
+for _, char in ipairs(break_points) do
+  vim.keymap.set('i', char, char .. '<C-g>u')
+end
 
 -- ========================================================================== --
 -- ==                                PLUGIN                                == --
