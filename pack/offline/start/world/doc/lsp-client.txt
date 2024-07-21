@@ -137,7 +137,26 @@ Settings                                               *offworld.lsp-settings*
       print('hello world')
     end
 <
+                                                 *offworld.settings.lspconfig*
+.lspconfig: ~
+    List of key/value pairs functions. The callbacks listed here should return
+    a lua table compatible with the argument of |offworld.lsp.new_client()|.
+    These language servers can be called using the command |:LspSetup|.
+>lua
+    local offworld = require('offworld.settings')
 
+    offworld.lspconfig.lua_ls = function()
+      local dir = require('offworld.dir')
+
+      return {
+        cmd = {'lua-language-server'},
+        filetypes = {'lua'},
+        root_dir = function(bufnr)
+          return dir.find_first(bufnr, {'.luarc.json'})
+        end,
+      }
+    end
+<
                                            *offworld.settings.ui.virtual_text*
 .ui.virtual_text: ~
     Enable virtual text for diagnostics.
@@ -159,6 +178,30 @@ Settings                                               *offworld.lsp-settings*
         • warn
         • hint
         • info
+
+==============================================================================
+Commands                                               *offworld.lsp-commands*
+
+                                                                   *:LspSetup*
+LspSetup {server}: ~
+    Start the `{server}` using the configuration provided in
+    |offworld.settings.lspconfig|. 
+
+    If the "bang" is provided the current working directory will be used as
+    the root directory for the language server.
+
+                                                                  *:LspFormat*
+LspFormat {server} timeout={timeout}: ~
+    Formats the current buffer or range.
+
+    If the "bang" is provided formatting will be asynchronous.
+
+    If you provide the name of a language server as a first argument it will
+    try to format only using that server. Otherwise, it will use every active
+    language server with formatting capabilities.
+
+    With the {timeout} parameter you can configure the time in milliseconds to
+    wait for the response of the formatting requests.
 
 ==============================================================================
 Lua API                                                     *offworld.lsp-api*

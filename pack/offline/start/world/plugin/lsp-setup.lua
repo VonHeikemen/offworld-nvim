@@ -62,3 +62,36 @@ if type(ui.sign_text) == 'table' then
   sign({name = 'info', hl = 'DiagnosticSignInfo'})
 end
 
+local function lsp_setup(input)
+  local lspconfig = require('offworld.settings').lspconfig or {}
+  local lsp = require('offworld.lsp-client')
+
+	local name = input.args
+  local get_config = lspconfig[name]
+
+	if get_config == nil then
+		return
+	end
+
+  local config = get_config()
+  config.name = name
+
+  if input.bang then
+    config.root_dir = function()
+      return vim.fn.getcwd()
+    end
+  end
+
+	lsp.new_client(config)
+
+	if vim.bo.filetype ~= '' then
+		pcall(function() vim.cmd('edit') end)
+	end
+end
+
+vim.api.nvim_create_user_command(
+  'LspSetup',
+  lsp_setup,
+  {nargs = 1, bang = true}
+)
+

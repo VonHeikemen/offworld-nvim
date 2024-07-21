@@ -21,35 +21,15 @@ offworld.lsp_attach = function(_, bufnr)
   vim.b.user_diagnostic_status = 1
 end
 
-local lspconfig = {}
+offworld.lspconfig.lua_ls = function()
+  local dir = require('offworld.dir')
 
-lspconfig.lua_ls = {
-  cmd = {'lua-language-server'},
-  filetypes = {'lua'}
-}
-
--- I like to start LSP servers manually
--- so I create a command
-local function lsp_start(input)
-  local lsp = require('offworld.lsp-client')
-  local name = input.args
-
-  local config = lspconfig[name]
-  if config == nil or config.name then
-    return
-  end
-
-  config.name = name
-  config.root_dir = function()
-    return vim.fn.getcwd()
-  end
-
-  lsp.new_client(config)
-
-  if vim.bo.filetype ~= '' then
-    pcall(function() vim.cmd('edit') end)
-  end
+  return {
+    cmd = {'lua-language-server'},
+    filetypes = {'lua'},
+    root_dir = function(bufnr)
+      return dir.find_first(bufnr, {'.luarc.json'})
+    end,
+  }
 end
-
-vim.api.nvim_create_user_command('LspStart', lsp_start, {nargs = 1})
 
