@@ -137,6 +137,29 @@ Settings                                               *offworld.lsp-settings*
       print('hello world')
     end
 <
+
+                                           *offworld.settings.ui.virtual_text*
+.ui.virtual_text: ~
+    Enable virtual text for diagnostics.
+
+                                           *offworld.settings.ui.float_border*
+.ui.float_border: ~
+    Set the style of the border of diagnostic floating window, hover window and
+    signature help window. These are valid the styles: `'none'`, `'single'`,
+    `'double'`, `'rounded'`, `'solid'` or `'shadow'`.
+
+                                              *offworld.settings.ui.sign_text*
+.ui.sign_text: ~
+    If the value is `true` it will make sure diagnostic signs are enable and
+    reserve a space in the signcolumn. If the value is `false` it will disable
+    the diagnostics signs. If the value is a table, it can modify the text of
+    the diagnostic signs using these properties:
+
+        • error
+        • warn
+        • hint
+        • info
+
 ==============================================================================
 Lua API                                                     *offworld.lsp-api*
 

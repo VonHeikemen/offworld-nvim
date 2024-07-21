@@ -2,6 +2,17 @@ vim.opt.signcolumn = 'yes'
 
 local offworld = require('offworld.settings')
 
+offworld.ui = {
+  virtual_text = false,
+  float_border = 'rounded',
+  sign_text = {
+    error = '✘',
+    warn = '▲',
+    hint = '⚑',
+    info = '»',
+  }
+}
+
 offworld.lsp_attach = function(_, bufnr)
   -- keymaps defined in lua/user/keymaps.lua
   offworld.lsp_keymaps(bufnr)
