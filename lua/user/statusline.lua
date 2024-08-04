@@ -1,8 +1,6 @@
 -- enable "global" statusline
 vim.opt.laststatus = 3
 
-local cmp = {} -- statusline components
-
 --- highlight pattern
 -- This has three parts: 
 -- 1. the highlight group
@@ -12,12 +10,10 @@ local cmp = {} -- statusline components
 local hi_pattern = '%%#%s#%s%%* '
 local hi_group = 'Visual'
 
-function _G._statusline_component(name)
-  return cmp[name]()
-end
+local ok = string.format(hi_pattern, hi_group, ' λ ')
 
 local diagnostic_count = function(bufnr, severity)
-	return #vim.diagnostic.get(bufnr, {severity = severity})
+  return #vim.diagnostic.get(bufnr, {severity = severity})
 end
 
 if vim.fn.has('nvim-0.10') == 1 then
@@ -26,50 +22,81 @@ if vim.fn.has('nvim-0.10') == 1 then
 	end
 end
 
-function cmp.diagnostic_status()
-	local bufnr = vim.api.nvim_get_current_buf()
-
-	if vim.b[bufnr].user_diagnostic_status == nil then
-		return ' '
-	end
-
-  local ok = ' λ '
-  local ignore = {
-    ['c'] = true, -- command mode
-    ['t'] = true,  -- terminal mode
-    ['i'] = true  -- insert mode
-  }
-
-  local mode = vim.api.nvim_get_mode().mode
-
-  if ignore[mode] then
-    return string.format(hi_pattern, hi_group, ok)
-  end
-
-  local levels = vim.diagnostic.severity
-
-  local errors = diagnostic_count(bufnr, levels.ERROR)
+local diagnostic_icon = function(bufnr)
+  local errors = diagnostic_count(bufnr, 1)
   if errors > 0 then
     return string.format(hi_pattern, hi_group, ' ✘ ')
   end
 
-  local warnings = diagnostic_count(bufnr, levels.WARN)
+  local warnings = diagnostic_count(bufnr, 2)
   if warnings > 0 then
     return string.format(hi_pattern, hi_group, ' ▲ ')
   end
 
-  return string.format(hi_pattern, hi_group, ok)
+  return ok
 end
 
+local change_icon = function(event)
+  local buf = vim.b[event.buf]
+  if buf.user_diagnostic_status then
+    vim.b.stl_icon = diagnostic_icon(event.buf)
+    vim.cmd('redrawstatus')
+    return
+  end
+
+  if buf.stl_icon ~= ' ' then
+    buf.stl_icon = ' '
+    vim.cmd('redrawstatus')
+  end
+end
+
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup('statusline_cmds', {clear = true})
+
+vim.api.nvim_create_user_command(
+  'StlIcon',
+  function(input)
+    if input.bang then
+      vim.b.user_diagnostic_status = 1
+    end
+
+    change_icon({buf = vim.api.nvim_get_current_buf()})
+  end,
+  {bang = true}
+)
+
+autocmd({'BufEnter', 'DiagnosticChanged'}, {
+  group = augroup,
+  callback = change_icon,
+})
+
+autocmd('ModeChanged', {
+  group = augroup,
+  pattern = {'i:n', 'v:n', 'c:n'},
+  callback = change_icon,
+})
+
+autocmd('ModeChanged', {
+  group = augroup,
+  pattern = {'n:i', 'v:s', 'n:c'},
+  callback = function(event)
+    local buf = vim.b[event.buf]
+    if buf.user_diagnostic_status then
+      buf.stl_icon = ok
+      vim.cmd('redrawstatus')
+    end
+  end,
+})
+
 local statusline = {
-  '%{%v:lua._statusline_component("diagnostic_status")%}',
+  '%{%b:stl_icon%}',
   '%t',
   '%r',
   '%m',
   '%=',
   '%{&filetype} ',
   ' %2p%% ',
-  '%#Visual# %3l:%-2c %*',
+  string.format(vim.trim(hi_pattern), hi_group, ' %3l:%-2c '),
 }
 
 vim.o.statusline = table.concat(statusline, '')

@@ -18,7 +18,7 @@ offworld.lsp_attach = function(_, bufnr)
 	offworld.lsp_keymaps(bufnr)
 
   -- enable diagnostic icon in statusline
-	vim.b.user_diagnostic_status = 1
+  vim.cmd('StlIcon!')
 end
 
 ---
