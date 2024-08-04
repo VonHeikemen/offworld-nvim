@@ -37,16 +37,14 @@ local diagnostic_icon = function(bufnr)
 end
 
 local change_icon = function(event)
-  local buf = vim.b[event.buf]
-  if buf.user_diagnostic_status then
-    vim.b.stl_icon = diagnostic_icon(event.buf)
+  if vim.b[event.buf].user_diagnostic_status then
+    vim.g.stl_icon = diagnostic_icon(event.buf)
     vim.cmd('redrawstatus')
     return
   end
 
-  if buf.stl_icon ~= ' ' then
-    buf.stl_icon = ' '
-    vim.cmd('redrawstatus')
+  if vim.g.stl_icon ~= ' ' then
+    vim.g.stl_icon = ' '
   end
 end
 
@@ -80,16 +78,15 @@ autocmd('ModeChanged', {
   group = augroup,
   pattern = {'n:i', 'v:s', 'n:c'},
   callback = function(event)
-    local buf = vim.b[event.buf]
-    if buf.user_diagnostic_status then
-      buf.stl_icon = ok
+    if vim.b[event.buf].user_diagnostic_status then
+      vim.g.stl_icon = ok
       vim.cmd('redrawstatus')
     end
   end,
 })
 
 local statusline = {
-  '%{%b:stl_icon%}',
+  '%{%g:stl_icon%}',
   '%t',
   '%r',
   '%m',
@@ -99,5 +96,6 @@ local statusline = {
   string.format(vim.trim(hi_pattern), hi_group, ' %3l:%-2c '),
 }
 
+vim.g.stl_icon = ' '
 vim.o.statusline = table.concat(statusline, '')
 
