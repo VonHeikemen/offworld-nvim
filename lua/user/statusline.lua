@@ -36,9 +36,11 @@ local diagnostic_icon = function(bufnr)
   return ok
 end
 
-local change_icon = function(event)
-  if vim.b[event.buf].user_diagnostic_status then
-    vim.g.stl_icon = diagnostic_icon(event.buf)
+local change_icon = function()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  if vim.b[bufnr].user_diagnostic_status then
+    vim.g.stl_icon = diagnostic_icon(bufnr)
     vim.cmd('redrawstatus')
     return
   end
@@ -58,7 +60,7 @@ vim.api.nvim_create_user_command(
       vim.b.user_diagnostic_status = 1
     end
 
-    change_icon({buf = vim.api.nvim_get_current_buf()})
+    change_icon()
   end,
   {bang = true}
 )
