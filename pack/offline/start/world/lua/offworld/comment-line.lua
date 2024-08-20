@@ -33,6 +33,10 @@ function M.toggle()
     local b = vim.fn.getpos('v')
     local e = vim.fn.getpos('.')
     range = {start = b[2], ends = e[2]}
+
+    if range.start > range.ends then
+      range = {start = range.ends, ends = range.start}
+    end
   elseif vim.tbl_contains(s.not_supported, mode) then
     vim.notify('[comment-line] Current mode is not supported', vim.log.levels.WARN)
     return
