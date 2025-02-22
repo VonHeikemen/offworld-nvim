@@ -47,6 +47,7 @@ local change_icon = function()
 
   if vim.g.stl_icon ~= ' ' then
     vim.g.stl_icon = ' '
+    vim.cmd('redrawstatus')
   end
 end
 
