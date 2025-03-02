@@ -34,7 +34,7 @@ local theme = {
   },
   ui = {
     cursorline    = color.light_gray,
-    selection     = color.blue,
+    selection     = color.bright_gray,
     colorcolumn   = color.light_gray,
     dark_text     = color.dark_gray,
     line_nr       = color.dark_gray,
