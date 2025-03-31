@@ -6,14 +6,17 @@ vim.g.mapleader = ' '
 -- ========================================================================== --
 
 -- Basic clipboard interaction
-vim.keymap.set({'n', 'x', 'o'}, 'gy', '"+y') -- copy
-vim.keymap.set({'n', 'x', 'o'}, 'gp', '"+p') -- paste
+vim.keymap.set({'n', 'x'}, 'gy', '"+y') -- copy
+vim.keymap.set({'n', 'x'}, 'gp', '"+p') -- paste
 
 -- Go to first character in line
 vim.keymap.set('', '<Leader>h', '^')
 
 -- Go to last character in line
 vim.keymap.set('', '<Leader>l', 'g_')
+
+-- Re-do
+vim.keymap.set('n', 'U', '<C-r>')
 
 -- Whatever you delete, make it go away
 vim.keymap.set({'n', 'x'}, 'c', '"_c')
@@ -45,7 +48,7 @@ vim.keymap.set('n', '<Leader><space>', '<cmd>ls<cr>:buffer ')
 vim.keymap.set('n', '<Leader>bc', '<cmd>bdelete<cr>')
 
 -- Close window
-vim.keymap.set('n', '<Leader>bq', '<cmd>q<cr>')
+vim.keymap.set('n', '<Leader>bq', '<cmd>close<cr>')
 
 -- Move to last active buffer
 vim.keymap.set('n', '<Leader>bl', '<cmd>buffer #<cr>')
@@ -63,29 +66,34 @@ vim.keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
 vim.keymap.set('n', '<leader>e', '<cmd>Lexplore<CR>')
 vim.keymap.set('n', '<leader>E', '<cmd>Lexplore %:p:h<CR>')
 
--- Switch to the directory of the open buffer
-vim.keymap.set('n', '<leader>cd', '<cmd>lcd %:p:h<cr>:pwd<cr>')
+-- Disable s keymap. We'll use this as prefix
+vim.keymap.set('n', 's', '<nop>')
+
+-- Very nomagic search
+vim.keymap.set('n', 'S', [[/\V]])
 
 -- Add word to search then replace
-vim.keymap.set('n', '<leader>sj', [[<cmd>let @/='\<'.expand('<cword>').'\>'<cr>"_ciw]])
+vim.keymap.set('n', 'sx', [[<cmd>let @/='\<'.expand('<cword>').'\>'<cr>"_ciw]])
 
 -- Add selection to search then replace
-vim.keymap.set('x', '<leader>sj', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>"_cgn]])
-
--- Add selection to search then record macro
-vim.keymap.set('x', '<leader>sq', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>gvqi]])
+vim.keymap.set('x', 'sx', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>"_cgn]])
 
 -- Record macro on word
-vim.keymap.set('n', '<leader>sq', [[<cmd>let @/=expand('<cword>')<cr>viwo<Esc>qi]])
+vim.keymap.set('n', 'siq', [[<cmd>let @/=expand('<cword>')<cr>viwo<Esc>qi]])
+
+-- Begin search and replace with a macro
+vim.keymap.set('x', 'siq', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>gvqi]])
 
 -- Apply macro in the next instance of the search
 vim.keymap.set('n', '<F8>', 'gn@i')
 
--- Apply @i macro
-vim.keymap.set('n', '<leader>sQ', '@i')
-
--- Repeat recently used macro
-vim.keymap.set('n', 'Q', '@@')
+-- Repeat recently used macro or use @i
+vim.keymap.set('n', 'Q', function()
+  local cmd = vim.api.nvim_command
+  if not pcall(cmd, 'normal! @@') then
+    cmd('normal! @i')
+  end
+end)
 
 -- Undo break points
 local break_points = {'<space>', '-', '_', ':', '.', '/'}
@@ -129,13 +137,14 @@ offworld.lsp_keymaps = function(bufnr)
 
   vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
   vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-  vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-  vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-  vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-  vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-  vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+  vim.keymap.set('n', 'grr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
+  vim.keymap.set('n', 'gri', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
+  vim.keymap.set('n', 'grd', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
+  vim.keymap.set('n', 'grt', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
   vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-  vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>LspFormat!<cr>', opts)
   vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+
+  vim.keymap.set({'n', 'x'}, 'gq', '<cmd>LspFormat!<cr>', opts)
+  vim.keymap.set({'n', 'i'}, '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
 end
 
