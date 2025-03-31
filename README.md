@@ -37,13 +37,13 @@ Leader key: `Space`.
 | Normal | `U` | Redo changes which were undone. |
 | Normal | `K` | Displays hover information about the symbol under the cursor. |
 | Normal | `gd` | Jump to the definition. |
-| Normal | `gD` | Jump to declaration. |
-| Normal | `gi` | Lists all the implementations for the symbol under the cursor. |
-| Normal | `go` | Jumps to the definition of the type symbol |
-| Normal | `gr` | Lists all the references. |
-| Normal | `gs` | Displays a function's signature information. |
+| Normal | `gq` | Format code in current buffer. |
+| Normal | `grd` | Jump to declaration. |
+| Normal | `gri` | Lists all the implementations for the symbol under the cursor. |
+| Normal | `grt` | Jumps to the definition of the type symbol |
+| Normal | `grr` | Lists all the references. |
+| Normal | `<C-s>` | Displays a function's signature information. |
 | Normal | `<F2>` | Renames all references to the symbol under the cursor. |
-| Normal | `<F3>` | Format code in current buffer. |
 | Normal | `<F4>` | Selects a code action available at the current cursor position. |
 | Normal | `gl` | Show diagnostics in a floating window. |
 | Normal | `[d` | Move to the previous diagnostic. |
@@ -60,11 +60,11 @@ Leader key: `Space`.
 | Normal | `<leader><space>` | Search open buffers. |
 | Normal | `<Ctrl-k>` | Move current line up. |
 | Normal | `<Ctrl-j>` | Move current line down. |
-| Normal | `<leader>sj` | Begin word search and replace. |
-| Normal | `<leader>sq` | Word search and replace but using a macro. |
-| Normal | `<leader>sQ` | Apply macro in register `i`. |
+| Normal | `S` | Begin a "very nomagic" search. |
+| Normal | `sx` | Add word to search and then begin replace. |
+| Normal | `siq` | Word search and replace but using a macro. |
 | Normal | `<F8>` | Apply macro in the next match of the current search. |
-| Normal | `Q` | Repeat recently used macro. |
+| Normal | `Q` | Repeat recently used macro or use `@i`. |
 | Normal | `<leader>e` | Toggle file explorer. |
 | Normal | `<leader>E` | Open file explorer in current folder. |
 | Normal | `<F5>` | Toggle embedded terminal. |
