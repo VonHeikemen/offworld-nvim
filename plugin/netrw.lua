@@ -21,10 +21,10 @@ local function mappings(event)
   end
 
   -- Close netrw window
-  map('n', 'q', '<cmd>Lexplore<cr>', {nowait = true})
+  map('n', 'q', '<cmd>close<cr>', {nowait = true})
 
   -- Go to file and close Netrw window
-  map('n', 'L', '<cr><cmd>Lexplore<cr>')
+  map('n', 'L', '<cr><cmd>close<cr>')
 
   -- Go back in history
   map('n', 'H', 'u')

@@ -62,9 +62,17 @@ vim.keymap.set('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
 -- Go to next diagnostic
 vim.keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
 
+-- Toggle file explorer
+vim.keymap.set('n', '<leader>e', function()
+  if vim.bo.filetype == 'netrw' then
+    return '<cmd>close<cr>'
+  end
+
+  return '<cmd>Lexplore %:p:h<cr>'
+end, {expr = true})
+
 -- Open file explorer
-vim.keymap.set('n', '<leader>e', '<cmd>Lexplore<CR>')
-vim.keymap.set('n', '<leader>E', '<cmd>Lexplore %:p:h<CR>')
+vim.keymap.set('n', '<leader>E', '<cmd>Explore<CR>')
 
 -- Disable s keymap. We'll use this as prefix
 vim.keymap.set('n', 's', '<nop>')
