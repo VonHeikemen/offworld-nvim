@@ -2,7 +2,7 @@
 vim.opt.laststatus = 3
 
 --- highlight pattern
--- This has three parts: 
+-- This has three parts:
 -- 1. the highlight group
 -- 2. text content
 -- 3. special sequence to restore highlight: %*
