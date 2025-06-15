@@ -1,5 +1,4 @@
 local concat  = '%s%s'
-local separator_active = ''
 
 local function tabpage(opts)
   local highlight = '%#TabLine#'

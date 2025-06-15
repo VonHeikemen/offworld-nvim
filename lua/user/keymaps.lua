@@ -10,10 +10,10 @@ vim.keymap.set({'n', 'x'}, 'gy', '"+y') -- copy
 vim.keymap.set({'n', 'x'}, 'gp', '"+p') -- paste
 
 -- Go to first character in line
-vim.keymap.set('', '<Leader>h', '^')
+vim.keymap.set('', '<leader>h', '^')
 
 -- Go to last character in line
-vim.keymap.set('', '<Leader>l', 'g_')
+vim.keymap.set('', '<leader>l', 'g_')
 
 -- Re-do
 vim.keymap.set('n', 'U', '<C-r>')
@@ -33,25 +33,25 @@ vim.keymap.set('x', '<C-k>', "<esc><cmd>'<,'>move '<-2<cr>gv=gv")
 vim.keymap.set('n', '<leader>a', '<cmd>keepjumps normal! ggVG<cr>')
 
 -- Write file
-vim.keymap.set('n', '<Leader>w', '<cmd>write<cr>')
+vim.keymap.set('n', '<leader>w', '<cmd>write<cr>')
 
 -- Safe quit
-vim.keymap.set('n', '<Leader>qq', '<cmd>quitall<cr>')
+vim.keymap.set('n', '<leader>qq', '<cmd>quitall<cr>')
 
 -- Force quit
-vim.keymap.set('n', '<Leader>Q', '<cmd>quitall!<cr>')
+vim.keymap.set('n', '<leader>Q', '<cmd>quitall!<cr>')
 
 -- Search open buffers
-vim.keymap.set('n', '<Leader><space>', '<cmd>ls<cr>:buffer ')
+vim.keymap.set('n', '<leader><space>', '<cmd>ls<cr>:buffer ')
 
 -- Close buffer
-vim.keymap.set('n', '<Leader>bc', '<cmd>bdelete<cr>')
+vim.keymap.set('n', '<leader>bc', '<cmd>bdelete<cr>')
 
 -- Close window
-vim.keymap.set('n', '<Leader>bq', '<cmd>close<cr>')
+vim.keymap.set('n', '<leader>bq', '<cmd>close<cr>')
 
 -- Move to last active buffer
-vim.keymap.set('n', '<Leader>bl', '<cmd>buffer #<cr>')
+vim.keymap.set('n', '<leader>bl', '<cmd>buffer #<cr>')
 
 -- Show diagnostic message
 vim.keymap.set('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
@@ -76,7 +76,7 @@ vim.keymap.set('n', '<leader>e', function()
 end, {expr = true})
 
 -- Open file explorer
-vim.keymap.set('n', '<leader>E', '<cmd>Explore<CR>')
+vim.keymap.set('n', '<leader>E', '<cmd>Explore<cr>')
 
 -- Disable s keymap. We'll use this as prefix
 vim.keymap.set('n', 's', '<nop>')
