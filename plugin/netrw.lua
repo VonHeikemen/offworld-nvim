@@ -24,7 +24,13 @@ local function mappings(event)
   map('n', 'q', '<cmd>close<cr>', {nowait = true})
 
   -- Go to file and close Netrw window
-  map('n', 'L', '<cr><cmd>close<cr>')
+  map('n', 'L', function()
+    if vim.t.netrw_lexbufnr then
+      return '<Plug>NetrwLocalBrowseCheck<cmd>Lexplore<cr>'
+    end
+
+    return '<Plug>NetrwLocalBrowseCheck'
+  end, {expr = true})
 
   -- Go back in history
   map('n', 'H', 'u')

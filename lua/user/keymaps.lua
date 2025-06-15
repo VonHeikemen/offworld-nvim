@@ -68,6 +68,10 @@ vim.keymap.set('n', '<leader>e', function()
     return '<cmd>close<cr>'
   end
 
+  if vim.t.netrw_lexbufnr then
+    return '<cmd>Lexplore<cr>'
+  end
+
   return '<cmd>Lexplore %:p:h<cr>'
 end, {expr = true})
 
