@@ -1,6 +1,6 @@
 local M = {}
 local s = {}
-local uv = vim.uv or vim.loop
+local uv = vim.loop or vim.uv
 local sep = uv.os_uname().version:match('Windows') and '\\' or '/'
 
 local config = {

@@ -11,7 +11,12 @@ local function tabpage(opts)
   end
 
   if opts.bufname ~= '' then
-    label = vim.fn.pathshorten(vim.fn.fnamemodify(opts.bufname, ':p:~:t'))
+    local name = vim.fn.fnamemodify(opts.bufname, ':p:~:t')
+    if name == '' then
+      label = '%t'
+    else
+      label = vim.fn.pathshorten(name)
+    end
   end
 
   return string.format('%s%s%s ', separator, highlight, label)

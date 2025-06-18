@@ -7,11 +7,10 @@ toggle Neovim's completion menu.
 ==============================================================================
 Quick Start                                   *offworld.completion-quickstart*
 
-Here is a quick configuration example using `offworld.settings` module.
+Here is a quick configuration example using `vim.g.offworld_completion` global
+variable.
 >lua
-  local offworld = require('offworld.settings')
-
-  offworld.completion = {
+  vim.g.offworld_completion = {
     lsp_omnifunc = true,
     tab_complete = true,
     toggle_menu = '<C-e>',
@@ -20,15 +19,15 @@ Here is a quick configuration example using `offworld.settings` module.
 ==============================================================================
 Settings                                        *offworld.completion-settings*
 
-                                   *offworld.settings.completion.tab_complete*
+                                          *g:offworld_completion.tab_complete*
 tab_complete: ~
     (Boolean, Optional) Enable keymaps for tab complete.
 
-                                    *offworld.settings.completion.toggle_menu*
+                                           *g:offworld_completion.toggle_menu*
 toggle_menu: ~
     (String, Optional) Set keymap to toggle completion menu.
 
-                                   *offworld.settings.completion.lsp_omnifunc*
+                                          *g:offworld_completion.lsp_omnifunc*
 lsp_omnifunc: ~
     (Boolean, Optional) Enable omnifunc keymaps when a language server is
     active in the current buffer.
@@ -36,7 +35,8 @@ lsp_omnifunc: ~
 ==============================================================================
 Lua API                                              *offworld.completion-api*
 
-Note: prefer using `offworld.settings` over of calling lua functions directly.
+Note: prefer using `vim.g.offworld_completion` over of calling lua functions
+directly.
 
                                           *offworld.completion.tab_complete()*
 .tab_complete(): ~

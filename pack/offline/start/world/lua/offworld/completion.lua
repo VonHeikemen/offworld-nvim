@@ -6,18 +6,14 @@ s.trigger = false
 
 local pumvisible = vim.fn.pumvisible
 
-local function has_words_before()
-  local cursor = vim.api.nvim_win_get_cursor(0)
-  local col = cursor[2]
-
+local function is_whitespace()
+  local col = vim.fn.col('.') - 1
   if col == 0 then
-    return false
+    return true
   end
 
-  local line = cursor[1]
-  local str = vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]
-
-  return str:sub(col, col):match('%s') == nil
+  local char = vim.fn.getline('.'):sub(col, col)
+  return type(char:match('%s')) == 'string'
 end
 
 function M.tab_complete()
@@ -52,11 +48,11 @@ function s.tab_expr()
     return '<Down>'
   end
 
-  if has_words_before() then
-    return '<C-x><C-n>'
+  if is_whitespace() then
+    return '<Tab>'
   end
 
-  return '<Tab>'
+  return '<C-x><C-n>'
 end
 
 function s.tab_omnifunc()
@@ -64,11 +60,11 @@ function s.tab_omnifunc()
     return '<Down>'
   end
 
-  if has_words_before() then
-    return '<C-x><C-o>'
+  if is_whitespace() then
+    return '<Tab>'
   end
 
-  return '<Tab>'
+  return '<C-x><C-o>'
 end
 
 function s.tab_prev_expr()

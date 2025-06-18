@@ -18,7 +18,7 @@ function cmd.add_file(input)
   require('offworld.buffer-nav').add_file({show_menu = input.bang})
 end
 
-function cmd.close_window(input)
+function cmd.close_window()
   require('offworld.buffer-nav').close_window()
 end
 

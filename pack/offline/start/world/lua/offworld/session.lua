@@ -17,15 +17,13 @@ function M.session_config()
 
   local path = vim.fn.fnamemodify(file, ':r')
   file = vim.fn.fnameescape(path .. 'x.vim')
-  local exec = 'edit %s'
 
-  vim.cmd(exec:format(file))
+  vim.cmd({cmd = 'edit', args = {file}})
 end
 
 function M.mksession(path, bang)
-  local exec = 'mksession%s %s'
   local file = vim.fn.fnameescape(path)
-  vim.cmd(exec:format(bang and '!' or '', file))
+  vim.cmd({cmd = 'mksession', bang = bang, args = {file}})
 end
 
 function M.load(path)
@@ -36,8 +34,7 @@ function M.load(path)
   end
 
   file = vim.fn.fnameescape(path)
-  local exec = 'source %s'
-  vim.cmd(exec:format(file))
+  vim.cmd({cmd = 'source', args = {file}})
 end
 
 return M

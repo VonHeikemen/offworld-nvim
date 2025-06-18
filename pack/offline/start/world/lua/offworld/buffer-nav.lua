@@ -3,7 +3,6 @@ local s = {}
 
 local uv = vim.loop or vim.uv
 local buf_name = 'buffer-nav.ui-menu'
-local parse_cmd = vim.api.nvim_parse_cmd ~= nil
 
 M.window = nil
 
@@ -105,10 +104,11 @@ function s.create_window()
   local buf_id = vim.api.nvim_create_buf(false, true)
 
   vim.api.nvim_buf_set_name(buf_id, buf_name)
-  vim.api.nvim_buf_set_option(buf_id, 'filetype', 'BufferNav')
-  vim.api.nvim_buf_set_option(buf_id, 'buftype', 'acwrite')
   vim.api.nvim_buf_set_lines(buf_id, 0, -1, false, {''})
-  vim.api.nvim_buf_set_option(buf_id, 'modified', false)
+
+  vim.api.nvim_set_option_value('filetype', 'BufferNav', {scope = 'local'})
+  vim.api.nvim_set_option_value('buftype', 'acwrite', {scope = 'local'})
+  vim.api.nvim_set_option_value('modified', false, {scope = 'local'})
 
   local close = M.close_window
   local opts = {noremap = true, buffer = buf_id}
@@ -173,10 +173,8 @@ function s.open_float(bufnr)
     zindex = 50,
   }
 
-  if parse_cmd then
-    config.title = '[Buffers]'
-    config.title_pos = 'center'
-  end
+  config.title = '[Buffers]'
+  config.title_pos = 'center'
 
   local width = vim.api.nvim_get_option('columns')
   local height = vim.api.nvim_get_option('lines')
@@ -210,18 +208,13 @@ function s.write_file(ev)
     s.filepath = ev.file
   end
 
-  if parse_cmd then
-    vim.cmd.write({
-      args = {s.filepath},
-      bang = true,
-      mods = {
-        noautocmd = true
-      }
-    })
-  else
-    local exec = 'noautocmd write! %s'
-    vim.cmd(exec:format(vim.fn.fnameescape(s.filepath)))
-  end
+  vim.cmd.write({
+    args = {s.filepath},
+    bang = true,
+    mods = {
+      noautocmd = true
+    }
+  })
 end
 
 function M.close_window()
@@ -252,17 +245,8 @@ function s.read_content(input)
   s.load_content(path)
 end
 
-function s.cmd_new(name, opts)
-  vim.cmd({cmd = name, args = {opts}})
-end
-
 function s.cmd(name, opts)
-  local exec = '%s %s'
-  vim.cmd(exec:format(name, vim.fn.fnameescape(opts)))
-end
-
-if parse_cmd then
-  s.cmd = s.cmd_new
+  vim.cmd({cmd = name, args = {opts}})
 end
 
 return M

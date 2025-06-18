@@ -113,9 +113,30 @@ for _, char in ipairs(break_points) do
   vim.keymap.set('i', char, char .. '<C-g>u')
 end
 
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP keymaps',
+  callback = function(event)
+    local opts = {buffer = event.buf}
+
+    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
+    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+    vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
+    vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+
+    vim.keymap.set({'n', 'x'}, 'gq', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
+    vim.keymap.set({'n', 'i'}, '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
+  end
+})
+
 -- ========================================================================== --
 -- ==                                PLUGIN                                == --
 -- ========================================================================== --
+
+vim.g.offworld_completion = {
+  lsp_omnifunc = true,
+  tab_complete = true,
+  toggle_menu = '<C-e>',
+}
 
 vim.keymap.set('n', 'M', '<cmd>BufferNavMenu<cr>')
 vim.keymap.set('n', '<leader>m', '<cmd>BufferNavMark<cr>')
@@ -135,28 +156,4 @@ vim.keymap.set({'', 't', 'i'}, '<F5>', function()
 
   require('offworld.terminal').toggle({direction = direction, size = size})
 end)
-
-local offworld = require('offworld.settings')
-
-offworld.completion = {
-  lsp_omnifunc = true,
-  tab_complete = true,
-  toggle_menu = '<C-e>',
-}
-
-offworld.lsp_keymaps = function(bufnr)
-  local opts = {buffer = bufnr}
-
-  vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-  vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-  vim.keymap.set('n', 'grr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-  vim.keymap.set('n', 'gri', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-  vim.keymap.set('n', 'grd', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-  vim.keymap.set('n', 'grt', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-  vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-  vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-
-  vim.keymap.set({'n', 'x'}, 'gq', '<cmd>LspFormat!<cr>', opts)
-  vim.keymap.set({'n', 'i'}, '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-end
 

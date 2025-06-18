@@ -14,24 +14,6 @@ vim.api.nvim_create_user_command(
   {desc = 'Delete extra whitespace'}
 )
 
-vim.api.nvim_create_user_command(
-  'SyntaxQuery',
-  function()
-    local f = vim.fn
-    local stack = f.synstack(f.line('.'), f.col('.'))
-
-    if stack[1] == nil then
-      print('No id found')
-      return
-    end
-
-    for _, id in pairs(stack) do
-      print(f.synIDattr(id, 'name'))
-    end
-  end,
-  {desc = 'Show highlight group'}
-)
-
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'user_cmds',
   desc = 'Highlight text after is copied',
@@ -42,7 +24,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 vim.api.nvim_create_autocmd('FileType', {
   group = 'user_cmds',
-  pattern = {'qf', 'help', 'man'},
-  command = 'nnoremap <buffer> q <cmd>quit<cr>'
+  pattern = {'qf', 'help', 'man', 'checkhealth'},
+  command = 'nnoremap <buffer> q <cmd>close<cr>'
 })
 

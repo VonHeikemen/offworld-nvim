@@ -90,18 +90,7 @@ function s.make_split(opts)
     exec.range[1] = vim.fn.float2nr(size * math.floor(vim.o.lines - 2))
   end
 
-  s.split_cmd(exec)
-end
-
-function s.split_cmd(args)
-  local str = 'silent keepalt %s %s%s%s'
-
-  vim.cmd(str:format(
-    args.mods.split,
-    args.range[1] or '',
-    args.mods.vertical and 'v' or '',
-    'split'
-  ))
+  vim.cmd(exec)
 end
 
 return M
