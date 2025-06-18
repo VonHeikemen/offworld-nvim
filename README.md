@@ -38,9 +38,6 @@ Leader key: `Space`.
 | Normal | `K` | Displays hover information about the symbol under the cursor. |
 | Normal | `gd` | Jump to the definition. |
 | Normal | `gq` | Format code in current buffer. |
-| Normal | `grd` | Jump to declaration. |
-| Normal | `gri` | Lists all the implementations for the symbol under the cursor. |
-| Normal | `grt` | Jumps to the definition of the type symbol |
 | Normal | `grr` | Lists all the references. |
 | Normal | `<C-s>` | Displays a function's signature information. |
 | Normal | `<F2>` | Renames all references to the symbol under the cursor. |
