@@ -6,7 +6,7 @@ What's included here? Custom colorschemes, statusline, tabline, lsp client confi
 
 ## Requirements
 
-* Neovim v0.7 or greater.
+* Neovim v0.9 or greater.
 * git.
 * (Optional) [lua-language-server](https://github.com/LuaLS/lua-language-server)
 
